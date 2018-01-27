@@ -24,17 +24,20 @@ public class LeftyPlayer
 {
     ReadInput readInput;
     Transform transform;
+    Camera camera;
+
 
     public LeftyPlayer(int _playerNum, Transform _transform)
     {
         this.readInput = new ReadInput(_playerNum, false);
         this.transform = _transform;
+        camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     public void Movement()
     {
         Vector2 inputVec = readInput.ReadMovement();
-        transform.Translate(new Vector2(AdjustXMovement(inputVec.x), inputVec.y) * 2 * Time.deltaTime);
+        transform.Translate(new Vector2(AdjustXMovement(inputVec.x), AdjustYMovement(inputVec.y)) * 2 * Time.deltaTime);
       
     }
 
@@ -44,6 +47,22 @@ public class LeftyPlayer
             return 1;
         else
             return 1.1f + inputX;
+    }
+
+    float AdjustYMovement(float inputY)
+    {
+        Vector2 screenPos = camera.WorldToScreenPoint(transform.position);
+
+        if (screenPos.y < (Screen.height * 0.7f) && screenPos.y > (Screen.height * 0.3f))
+            return inputY;
+        else if (screenPos.y < (Screen.height * 0.3f) && inputY > 0)
+            return inputY;
+        else if (screenPos.y > (Screen.height * 0.7f) && inputY < 0)
+            return inputY;
+        else
+            return 0;
+
+        
     }
 }
 
