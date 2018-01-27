@@ -18,10 +18,13 @@ public class PlayerScript : MonoBehaviour
 
     void Awake()
     {
+        gameObject.GetComponent<BoxCollider2D>().enabled = false;
         if (Constants.RightyPlayerNum == playerNum)
             gameObject.tag = "Righty";
         else
             gameObject.tag = "Lefty";
+
+        DeleteSparePlayerObjects(playerNum);
     }
 
     void Start()
@@ -30,11 +33,11 @@ public class PlayerScript : MonoBehaviour
         {
             GameObject animF = Instantiate(rightyAnimF, transform);
             GameObject animB = Instantiate(rightyAnimB, transform);
-            _rp = new RightyPlayer(playerNum, gameObject.transform, animF, animB);
+            _rp = new RightyPlayer(playerNum, gameObject.transform, animF, animB, gameObject.GetComponent<BoxCollider2D>());
         }
         else
         {
-            _lp = new LeftyPlayer(playerNum, gameObject.transform, gameObject.GetComponent<Collider2D>());
+            _lp = new LeftyPlayer(playerNum, gameObject.transform, gameObject.GetComponent<BoxCollider2D>());
             GameObject anim = Instantiate(leftyAnim, transform);
         }
     }
@@ -62,7 +65,21 @@ public class PlayerScript : MonoBehaviour
             if (collision.gameObject.tag == "FinishLine")
                 _lp.DisableCollider();
             else if (collision.gameObject.tag == "Righty")
+            {
+                GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CamScribuls>().RemoveTransform(gameObject.transform.GetInstanceID());
+                Constants.LeftyAmount--;
                 Destroy(gameObject);
+            }
+        }
+    }
+
+    void DeleteSparePlayerObjects(int _playerNum)
+    {
+        int padAmount = Input.GetJoystickNames().Length;
+        if (_playerNum > padAmount)
+        {
+            Constants.LeftyAmount--;
+            Destroy(gameObject);
         }
     }
 }
@@ -72,21 +89,24 @@ public class LeftyPlayer
     InputReader InputReader;
     Transform transform;
     Camera camera;
-    Collider2D collider;
+    BoxCollider2D collider;
 
 
-    public LeftyPlayer(int _playerNum, Transform _transform, Collider2D _collider)
+    public LeftyPlayer(int _playerNum, Transform _transform, BoxCollider2D _collider)
     {
         this.InputReader = new InputReader(_playerNum, false);
         this.transform = _transform;
         this.collider = _collider;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        collider.size = new Vector2(1, 5.64f);
+        collider.offset = new Vector2(0, -0.74f);
+        collider.enabled = true;
     }
 
     public void Movement()
     {
         Vector2 inputVec = InputReader.ReadMovement();
-        transform.Translate(new Vector2(AdjustXMovement(inputVec.x), AdjustYMovement(inputVec.y)) * 2 * Time.deltaTime);
+        transform.Translate(new Vector2(AdjustXMovement(inputVec.x), AdjustYMovement(inputVec.y)) * 10 * Time.deltaTime);
       
     }
 
@@ -135,8 +155,9 @@ public class RightyPlayer
     bool dashing;
     GameObject animF;
     GameObject animB;
+    BoxCollider2D collider;
 
-    public RightyPlayer(int _playerNum, Transform _transform, GameObject _animf, GameObject _animb)
+    public RightyPlayer(int _playerNum, Transform _transform, GameObject _animf, GameObject _animb, BoxCollider2D _collider)
     {
         this.inputReader = new InputReader(_playerNum, true);
         this.location = Location.up;
@@ -147,13 +168,18 @@ public class RightyPlayer
         this.animF = _animf;
         this.animB = _animb;
         animB.SetActive(false);
+        this.collider = _collider;
+        collider.size = new Vector2(2.24f, 3.35f);
+        collider.offset = new Vector2(-0.18f, 0.32f);
+        collider.enabled = true;
+
     }
 
     public void Movement()
     {
         Vector2 movement = inputReader.ReadMovement();
         if (!Dashing())
-            transform.Translate(new Vector2(AdjustXMovement(movement.x), 0) * 8 * Time.deltaTime);
+            transform.Translate(new Vector2(AdjustXMovement(movement.x), 0) * 30 * Time.deltaTime);
     }
 
     public void CommitActions()

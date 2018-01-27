@@ -45,6 +45,7 @@ public class PauseScribuls : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        Constants.LeftyAmount = 3;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }    
 }
