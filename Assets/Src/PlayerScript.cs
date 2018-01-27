@@ -53,7 +53,12 @@ public class LeftyPlayer
 
     float AdjustXMovement(float inputX)
     {
-        if (inputX == 0)
+        Vector2 screenPos = camera.WorldToScreenPoint(transform.position);
+        if (screenPos.x > (Screen.width * 0.99f))
+            return 0;
+        else if (screenPos.x < (Screen.width * 0.01f))
+            return 2.2f;
+        else if (inputX == 0)
             return 1;
         else
             return 1.1f + inputX;
@@ -104,7 +109,7 @@ public class RightyPlayer
     {
         Vector2 movement = readInput.ReadMovement();
         if (!Dashing())
-            transform.Translate(new Vector2(movement.x, 0) * 8 * Time.deltaTime);
+            transform.Translate(new Vector2(AdjustXMovement(movement.x), 0) * 8 * Time.deltaTime);
     }
 
     public void CommitActions()
@@ -123,6 +128,18 @@ public class RightyPlayer
                     break;
             }
         }
+    }
+
+    float AdjustXMovement(float inputX)
+    {
+        Vector2 screenPos = camera.WorldToScreenPoint(transform.position);
+
+        if (screenPos.x < (Screen.width * 0.01f))
+            return 2;
+        else if (screenPos.x > (Screen.width * 0.99f))
+            return 0;
+        else
+            return inputX;
     }
 
     bool Dashing()
@@ -151,10 +168,5 @@ public class RightyPlayer
             }
         }
         return true;
-    }
-
-    public void DisableCollider()
-    {
-        collider.enabled = false;
     }
 }
