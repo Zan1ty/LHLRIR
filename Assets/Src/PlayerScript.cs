@@ -107,11 +107,11 @@ public class LeftyPlayer
     {
         Vector2 screenPos = camera.WorldToScreenPoint(transform.position);
 
-        if (screenPos.y < (Screen.height * 0.7f) && screenPos.y > (Screen.height * 0.3f))
+        if (screenPos.y < (Screen.height * 0.35f) && screenPos.y > (Screen.height * 0.2f))
             return inputY;
-        else if (screenPos.y < (Screen.height * 0.3f) && inputY > 0)
+        else if (screenPos.y < (Screen.height * 0.2f) && inputY > 0)
             return inputY;
-        else if (screenPos.y > (Screen.height * 0.7f) && inputY < 0)
+        else if (screenPos.y > (Screen.height * 0.35f) && inputY < 0)
             return inputY;
         else
             return 0;
@@ -142,7 +142,7 @@ public class RightyPlayer
         this.location = Location.up;
         this.transform = _transform;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        Vector2 worldpos = camera.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.8f, 0));
+        Vector2 worldpos = camera.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.4f, 0));
         transform.position = new Vector2(transform.position.x, worldpos.y);
         this.animF = _animf;
         this.animB = _animb;
@@ -198,7 +198,7 @@ public class RightyPlayer
 
         if (location == Location.up)
         {
-            if (screenPos.y >= (Screen.height * 0.2f))
+            if (screenPos.y >= (Screen.height * 0.1f))
                 transform.Translate(Vector2.down * 15f * Time.deltaTime);
             else
             {
@@ -208,7 +208,7 @@ public class RightyPlayer
         }
         else
         {
-            if (screenPos.y <= (Screen.height * 0.8f))
+            if (screenPos.y <= (Screen.height * 0.4f))
                 transform.Translate(Vector2.up * 15f * Time.deltaTime);
             else
             {
