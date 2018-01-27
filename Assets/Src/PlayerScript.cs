@@ -10,13 +10,21 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         //_rp = new RightyPlayer(1, gameObject.transform);
-        _lp = new LeftyPlayer(1, gameObject.transform);
+        _lp = new LeftyPlayer(1, gameObject.transform, gameObject.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
     void Update()
     {
         _lp.Movement();
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "FinishLine")
+            _lp.DisableCollider();
+        else if (collision.gameObject.tag == "Righty")
+            Destroy(gameObject);
     }
 }
 
@@ -25,12 +33,14 @@ public class LeftyPlayer
     ReadInput readInput;
     Transform transform;
     Camera camera;
+    Collider2D collider;
 
 
-    public LeftyPlayer(int _playerNum, Transform _transform)
+    public LeftyPlayer(int _playerNum, Transform _transform, Collider2D _collider)
     {
         this.readInput = new ReadInput(_playerNum, false);
         this.transform = _transform;
+        this.collider = _collider;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
@@ -61,8 +71,11 @@ public class LeftyPlayer
             return inputY;
         else
             return 0;
+    }
 
-        
+    public void DisableCollider()
+    {
+        collider.enabled = false;
     }
 }
 
@@ -75,13 +88,15 @@ public class RightyPlayer
     Location location;
     Transform transform;
     Camera camera;
+    Collider2D collider;
     bool dashing;
 
-    public RightyPlayer(int _playerNum, Transform _transform)
+    public RightyPlayer(int _playerNum, Transform _transform, Collider2D _collider)
     {
         this.readInput = new ReadInput(_playerNum, true);
         this.location = Location.up;
         this.transform = _transform;
+        this.collider = _collider;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
@@ -136,5 +151,10 @@ public class RightyPlayer
             }
         }
         return true;
+    }
+
+    public void DisableCollider()
+    {
+        collider.enabled = false;
     }
 }
