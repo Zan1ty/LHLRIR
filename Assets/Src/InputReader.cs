@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReadInput {
+public class InputReader {
 
     int playerNum;
     Queue<string> actions;
 
-    public ReadInput(int _playerNum, bool _isRighty)
+    public InputReader(int _playerNum, bool _isRighty)
     {
         this.playerNum = _playerNum;
         if (_isRighty)

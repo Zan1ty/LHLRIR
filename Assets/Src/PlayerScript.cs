@@ -6,31 +6,57 @@ public class PlayerScript : MonoBehaviour
 {
     RightyPlayer _rp;
     LeftyPlayer _lp;
+    [SerializeField]
+    int playerNum;
     // Use this for initialization
+
+    void Awake()
+    {
+        if (Constants.RightyPlayerNum == playerNum)
+            gameObject.tag = "Righty";
+        else
+            gameObject.tag = "Lefty";
+    }
+
     void Start()
     {
-        //_rp = new RightyPlayer(1, gameObject.transform);
-        _lp = new LeftyPlayer(1, gameObject.transform, gameObject.GetComponent<Collider2D>());
+        if (Constants.RightyPlayerNum == playerNum)
+            _rp = new RightyPlayer(playerNum, gameObject.transform);
+        else 
+        _lp = new LeftyPlayer(playerNum, gameObject.transform, gameObject.GetComponent<Collider2D>());
     }
 
     // Update is called once per frame
     void Update()
     {
-        _lp.Movement();
+        if (Constants.RightyPlayerNum == playerNum)
+        {
+            _rp.Movement();
+            _rp.CommitActions();
+        }
+        else 
+            _lp.Movement();
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "FinishLine")
-            _lp.DisableCollider();
-        else if (collision.gameObject.tag == "Righty")
-            Destroy(gameObject);
+        if (Constants.RightyPlayerNum == playerNum)
+        {
+            
+        }   
+        else
+        {
+            if (collision.gameObject.tag == "FinishLine")
+                _lp.DisableCollider();
+            else if (collision.gameObject.tag == "Righty")
+                Destroy(gameObject);
+        }
     }
 }
 
 public class LeftyPlayer
 {
-    ReadInput readInput;
+    InputReader InputReader;
     Transform transform;
     Camera camera;
     Collider2D collider;
@@ -38,7 +64,7 @@ public class LeftyPlayer
 
     public LeftyPlayer(int _playerNum, Transform _transform, Collider2D _collider)
     {
-        this.readInput = new ReadInput(_playerNum, false);
+        this.InputReader = new InputReader(_playerNum, false);
         this.transform = _transform;
         this.collider = _collider;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
@@ -46,7 +72,7 @@ public class LeftyPlayer
 
     public void Movement()
     {
-        Vector2 inputVec = readInput.ReadMovement();
+        Vector2 inputVec = InputReader.ReadMovement();
         transform.Translate(new Vector2(AdjustXMovement(inputVec.x), AdjustYMovement(inputVec.y)) * 2 * Time.deltaTime);
       
     }
@@ -89,32 +115,30 @@ public class RightyPlayer
     enum Location { up, down };
 
 
-    ReadInput readInput;
+    InputReader inputReader;
     Location location;
     Transform transform;
     Camera camera;
-    Collider2D collider;
     bool dashing;
 
-    public RightyPlayer(int _playerNum, Transform _transform, Collider2D _collider)
+    public RightyPlayer(int _playerNum, Transform _transform)
     {
-        this.readInput = new ReadInput(_playerNum, true);
+        this.inputReader = new InputReader(_playerNum, true);
         this.location = Location.up;
         this.transform = _transform;
-        this.collider = _collider;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     public void Movement()
     {
-        Vector2 movement = readInput.ReadMovement();
+        Vector2 movement = inputReader.ReadMovement();
         if (!Dashing())
             transform.Translate(new Vector2(AdjustXMovement(movement.x), 0) * 8 * Time.deltaTime);
     }
 
     public void CommitActions()
     {
-        var actions = readInput.ReadAction();
+        var actions = inputReader.ReadAction();
         if (actions.Count > 0)
         {
             string action = actions.Dequeue();
