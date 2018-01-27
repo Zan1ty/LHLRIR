@@ -9,6 +9,12 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]
     int playerNum;
     // Use this for initialization
+    [SerializeField]
+    GameObject leftyAnim;
+    [SerializeField]
+    GameObject rightyAnimF;
+    [SerializeField]
+    GameObject rightyAnimB;
 
     void Awake()
     {
@@ -21,9 +27,16 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         if (Constants.RightyPlayerNum == playerNum)
-            _rp = new RightyPlayer(playerNum, gameObject.transform);
-        else 
-        _lp = new LeftyPlayer(playerNum, gameObject.transform, gameObject.GetComponent<Collider2D>());
+        {
+            GameObject animF = Instantiate(rightyAnimF, transform);
+            GameObject animB = Instantiate(rightyAnimB, transform);
+            _rp = new RightyPlayer(playerNum, gameObject.transform, animF, animB);
+        }
+        else
+        {
+            _lp = new LeftyPlayer(playerNum, gameObject.transform, gameObject.GetComponent<Collider2D>());
+            GameObject anim = Instantiate(leftyAnim, transform);
+        }
     }
 
     // Update is called once per frame
@@ -120,13 +133,20 @@ public class RightyPlayer
     Transform transform;
     Camera camera;
     bool dashing;
+    GameObject animF;
+    GameObject animB;
 
-    public RightyPlayer(int _playerNum, Transform _transform)
+    public RightyPlayer(int _playerNum, Transform _transform, GameObject _animf, GameObject _animb)
     {
         this.inputReader = new InputReader(_playerNum, true);
         this.location = Location.up;
         this.transform = _transform;
         camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+        Vector2 worldpos = camera.ScreenToWorldPoint(new Vector3(0, Screen.height * 0.8f, 0));
+        transform.position = new Vector2(transform.position.x, worldpos.y);
+        this.animF = _animf;
+        this.animB = _animb;
+        animB.SetActive(false);
     }
 
     public void Movement()
@@ -162,13 +182,18 @@ public class RightyPlayer
             return 2;
         else if (screenPos.x > (Screen.width * 0.99f))
             return 0;
-        else
+        else 
             return inputX;
     }
 
     bool Dashing()
     {
-        if (!dashing) return false;
+        if (!dashing)
+        {
+            animB.SetActive(location == Location.up ? false : true);
+            animF.SetActive(location == Location.down ? false : true);
+            return false;
+        }
         Vector2 screenPos = camera.WorldToScreenPoint(transform.position);
 
         if (location == Location.up)
