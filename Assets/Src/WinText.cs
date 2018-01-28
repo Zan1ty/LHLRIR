@@ -9,7 +9,7 @@ public class WinText : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        winText.text = Constants.Winner;
+        winText.text = Constants.Winner + " WIN!";
     }
 
 }

@@ -8,6 +8,8 @@ TagManager:
   - FinishLine
   - Righty
   - PauseMenu
+  - BearTrap
+  - BearTrapClosed
   layers:
   - Default
   - TransparentFX

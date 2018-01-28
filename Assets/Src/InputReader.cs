@@ -24,7 +24,9 @@ public class InputReader {
     public Queue<string> ReadAction()
     {
         if (Input.GetButtonDown("fire" + playerNum.ToString()))
-            actions.Enqueue("fire");
+        {
+                actions.Enqueue("fire");
+        }
 
         return actions;
     }

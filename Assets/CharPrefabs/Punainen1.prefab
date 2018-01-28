@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: -2
+  m_SortingOrder: 48
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4576982579332502}
@@ -941,7 +941,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 52
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4580130862385158}
@@ -961,7 +961,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: -2
+  m_SortingOrder: 48
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4263537391183150}
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4820265841257352}
@@ -1187,7 +1187,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 49
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4716090992879088}
@@ -1244,7 +1244,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 52
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4263866162274762}
@@ -1280,7 +1280,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 51
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4306484675650128}
@@ -1300,7 +1300,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 50
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4601094386518158}
@@ -1321,7 +1321,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 49
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4621914480687082}
@@ -1341,7 +1341,7 @@ MonoBehaviour:
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 51
   m_Bones: []
   m_BoneTransforms:
   - {fileID: 4774011076700366}
